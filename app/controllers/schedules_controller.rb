@@ -1,70 +1,70 @@
 class SchedulesController < ApplicationController
   before_action :set_schedule, only: %i[ show edit update destroy ]
-
-  # GET /schedules or /schedules.json
+  
   def index
-    @schedules = Schedule.all
+  @schedules = Schedule.all
   end
-
-  # GET /schedules/1 or /schedules/1.json
+  
   def show
   end
-
-  # GET /schedules/new
+  
   def new
-    @schedule = Schedule.new
+  @schedule = Schedule.new
   end
-
-  # GET /schedules/1/edit
+  
   def edit
   end
-
-  # POST /schedules or /schedules.json
+  
   def create
-    @schedule = Schedule.new(schedule_params)
-
-    respond_to do |format|
-      if @schedule.save
-        format.html { redirect_to schedule_url(@schedule), notice: "Schedule was successfully created." }
-        format.json { render :show, status: :created, location: @schedule }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @schedule.errors, status: :unprocessable_entity }
-      end
-    end
+  @schedule = Schedule.new(schedule_params)
+  if @schedule.save
+  flash[:notice] = "スケジュールを新規登録しました"
+  redirect_to schedules_path
+  else
+  render :new, status: :unprocessable_entity
   end
-
-  # PATCH/PUT /schedules/1 or /schedules/1.json
+  end
+  
   def update
-    respond_to do |format|
-      if @schedule.update(schedule_params)
-        format.html { redirect_to schedule_url(@schedule), notice: "Schedule was successfully updated." }
-        format.json { render :show, status: :ok, location: @schedule }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @schedule.errors, status: :unprocessable_entity }
-      end
-    end
+  if @schedule.update(schedule_params)
+  flash[:notice] = "スケジュールを更新しました"
+  redirect_to schedules_path
+  else
+  render :edit, status: :unprocessable_entity
   end
-
-  # DELETE /schedules/1 or /schedules/1.json
+  end
+  
   def destroy
-    @schedule.destroy
-
-    respond_to do |format|
-      format.html { redirect_to schedules_url, notice: "Schedule was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  @schedule.destroy
+  respond_to do |format|
+  format.html { redirect_to schedules_path, notice: "スケジュールを削除しました" }
+  format.json { head :no_content }
   end
-
+  end
+  
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_schedule
-      @schedule = Schedule.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def schedule_params
-      params.require(:schedule).permit(:title, :start_date, :end_date, :all_day, :memo)
-    end
-end
+  def set_schedule
+  @schedule = Schedule.find(params[:id])
+  end
+  
+ 
+  def schedule_params
+    params.require(:schedule).permit(:title, :start_date, :end_date, :all_day)
+  end
+  end
+  
+  def sign_up_process
+  schedule = Schedule.new(schedule_params)
+  p schedule.title
+  p schedule.valid?
+  p schedule.errors.messages
+  schedule.errors.messages.each do |key, messages|
+  p key
+  messages.each do |message|
+  p message
+  end
+  end
+  end
+  
+  
+  
