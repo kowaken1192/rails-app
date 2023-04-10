@@ -39,4 +39,13 @@
         <td><%= schedule.updated_at.to_formatted_s(:datetime_jp) %></td>
         <td><%= link_to "参照", schedule %></td>
         <td><%= link_to "編集", [:edit, schedule] %></td>
-        <td><%= link_to "削除", schedule
+        <td><%= link_to "削除", schedule, data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "スケジュール新規登録", new_schedule_path %></p>
+<div class="sum"><%= "合計予定数：#{Schedule.count}件" %></div>
+<div class="today-date"><%= "本日の日付：#{Date.today.strftime("%Y/%m/%d")}" %></div>
+
